@@ -35,3 +35,9 @@
     name: openvpn
     state: started
     enabled: yes
+
+- name: Start OpenVPN Server daemon...
+  systemd:
+    name: openvpn@server.service
+    state: started
+    enabled: yes

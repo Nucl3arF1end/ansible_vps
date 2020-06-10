@@ -6,4 +6,4 @@
 
 - include_tasks: pb3_install-docker.yml
 
-- include_tasks: pb4_install-wireguard.yml
+#- include_tasks: pb4_install-wireguard.yml
