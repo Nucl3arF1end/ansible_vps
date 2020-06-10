@@ -1,0 +1,4 @@
+---
+- hosts: vps1
+  roles:
+    - vps1

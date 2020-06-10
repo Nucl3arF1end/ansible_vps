@@ -1,0 +1,27 @@
+---
+
+- name: Add the GPG key for the official Docker repository to system...
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+- name: Add the Docker repository to APT sources...
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: Install Docker...
+  apt:
+    update_cache: yes
+    name: docker
+    state: latest
+
+- name: Check Docker version...
+  shell:
+    cmd: docker -v
+
+- name: Copy script from mtproto...
+  copy:
+    src: templates/mtproto.sh
+    dest: /root/mtproto.sh
+    owner: root
+    group: root
+    mode: '0700'

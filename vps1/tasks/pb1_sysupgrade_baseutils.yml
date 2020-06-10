@@ -1,0 +1,44 @@
+---
+
+- name: Update packages...
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: install cli apps...
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+      - curl
+      - htop
+      - tmux
+      - tree
+      - mc
+      - neofetch
+    state: latest
+
+- name: install cli apps networking...
+  apt:
+    name:
+      - fail2ban
+      - iperf3
+      - mtr
+      - dnsutils
+      - net-tools
+      - nmap
+      - ntp
+      - openssh-server
+      - traceroute
+      - whois
+      - tcpdump
+      - wget
+      - aria2
+    state: latest
+
+- name: Start fail2ban...
+  systemd:
+    name: fail2ban
+    state: started
+    enabled: yes

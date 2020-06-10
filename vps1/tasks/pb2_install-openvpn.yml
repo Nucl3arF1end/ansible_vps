@@ -1,0 +1,37 @@
+---
+
+- name: Install OpenVPN package...
+  apt:
+    update_cache: yes
+    name: openvpn
+    state: latest
+
+- name: Copy config's and keys...
+  copy:
+    src: templates/openvpn/
+    dest: /etc/openvpn
+    follow: yes
+
+- name: Add VPN network to NAT...
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: eth0
+    source: 10.110.0.0/24
+    destination: 0.0.0.0/0
+    jump: MASQUERADE
+    protocol: all
+    comment: OpenVPN network Masquerade
+
+- name: Enable IPv4 forwarding...
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    state: present
+    reload: true
+
+- name: Start OpenVPN daemon...
+  systemd:
+    name: openvpn
+    state: started
+    enabled: yes

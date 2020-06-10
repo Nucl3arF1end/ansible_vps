@@ -1,0 +1,19 @@
+---
+
+- name: Install Wireguard...
+  apt:
+    update_cache: yes
+    name: wireguard
+    state: latest
+
+- name: Copy config and keys...
+  copy:
+    src: templates/wireguard/
+    dest: /etc/wireguard
+    follow: yes
+
+- name: Restart wireguard daemon...
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: wireguard
