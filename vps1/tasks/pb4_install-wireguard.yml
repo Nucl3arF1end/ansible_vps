@@ -15,13 +15,9 @@
     dest: /etc/wireguard
     follow: yes
 
-- name: Restart wireguard daemon...
+- name: Restart wireguard daemon and enabled...
   systemd:
     state: restarted
+    enabled: yes
     daemon_reload: yes
-    name: wg-quick@wg0
-
-- name: Enable wireguard daemon...
-  systemd:
-    state: enabled
     name: wg-quick@wg0
