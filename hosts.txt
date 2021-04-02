@@ -1,2 +1,2 @@
 [vps1]
-10.10.0.10
+vps.pcloud.name

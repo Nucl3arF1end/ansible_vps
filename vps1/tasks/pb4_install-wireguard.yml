@@ -3,7 +3,10 @@
 - name: Install Wireguard...
   apt:
     update_cache: yes
-    name: wireguard
+    name:
+      - wireguard
+      - wireguard-tools
+      - qrencode
     state: latest
 
 - name: Copy config and keys...
@@ -16,4 +19,9 @@
   systemd:
     state: restarted
     daemon_reload: yes
-    name: wireguard
+    name: wg-quick@wg0
+
+- name: Enable wireguard daemon...
+  systemd:
+    state: enabled
+    name: wg-quick@wg0
