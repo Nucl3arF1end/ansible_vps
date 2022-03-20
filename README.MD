@@ -2,30 +2,38 @@
 # Как с этим работать?
 
 - Предварительно настроить vps базово, ssh + прописать свой паблик в authorized_keys
-- Изменить настройки данной роли под свою vps (vps1/defaults/main.yml) 
-    ansible_ssh_port: '<port>'
-    ansible_ssh_private_key_file: <ssh-key-name>
+- Изменить настройки данной роли под свою vps (<i>vps1/defaults/main.yml</i>) 
+    
+    <b>ansible_ssh_port</b>: "<i>port</i>"
+
+    <b>ansible_ssh_private_key_file</b>: "<i>ssh-key-name</i>"
 
 ## Если запуск роли происходит впервые, и на абсолютно новом vps, без бекапа настроек:
 
-- В vps1/templates/openvpn/root/server.conf прописать свои параметры конфигурации openvpn сервера
+- <i>vps1/templates/openvpn/root/server.conf</i> - прописать свои параметры конфигурации openvpn сервера
 
-- В vps1/templates/openvpn/ansible_vpn/roles/openvpn-keys/templates/vps.ovpn.j2 прописать ip и порт своего сервера
+- <i>vps1/templates/openvpn/ansible_vpn/roles/openvpn-keys/templates/vps.ovpn.j2</i> - прописать ip и порт своего сервера
 
-- В vps1/templates/wireguard/wg0.conf прописать свои параметры конфигурации wireguard сервера (предварительно сгенерив приватный и публичный ключ для сервера)
+- <i>vps1/templates/wireguard/wg0.conf</i> - прописать свои параметры конфигурации wireguard сервера (предварительно сгенерив приватный и публичный ключ для сервера)
 
-- В vps1/templates/wireguard/ansible_wg/roles/wireguard/templates/wg_client.conf.j2 "Endpoint" прописать ip и порт своего сервера
+- <i>vps1/templates/wireguard/ansible_wg/roles/wireguard/templates/wg_client.conf.j2</i> - "Endpoint" прописать ip и порт своего сервера
 
-- В vps1/templates/openvpn/easy-rsa/vars прописать свои параметры генерации ключей
+- <i>vps1/templates/openvpn/easy-rsa/vars</i> прописать свои параметры генерации ключей
     Так же можно прямо на текущем хосте, предварительно сгенерить сертифкаты и ключи для сервера, либо можно это сделать на самом сервере, но тогда openvpn не будет работать после первого прохода ролью.
 
-    Для генерации надо перейти в директорию vps1/templates/openvpn/easy-rsa/
-        - выполнить `source vars`
-        - `./build-ca` - для создания корневого сертификата
-        - `./build-dh` - Формируем ключ Диффи-Хеллмана
-        - `./build-key-server ovpnserver` - генерим сертификат для самого openvpn сервера с названием ovpnserver
+    Для генерации надо перейти в директорию <i>vps1/templates/openvpn/easy-rsa/</i>
 
-    Проверяем что в vps1/templates/openvpn/easy-rsa/keys/ появились все созданные сертификаты и ключи
+    Последовательно выполнить: 
+
+    `source vars`
+
+    `./build-ca` - для создания корневого сертификата
+
+    `./build-dh` - Формируем ключ Диффи-Хеллмана
+
+    `./build-key-server ovpnserver` - генерим сертификат для самого openvpn сервера с названием ovpnserver
+
+    Проверяем что в <i>vps1/templates/openvpn/easy-rsa/keys/</i> появились все созданные сертификаты и ключи
 
 ## После подготовительных процедур, можно запускать плейбук
 
@@ -35,23 +43,29 @@
 
 Создание клиентских ключей и конфигов для openvpn тоже выполняется автоматически с помощью ansible.
 
-Для этого на сервер копируется директория vps1/templates/openvpn/ansible_vpn/ которая будет находиться в /etc/openvpn
+Для этого на сервер копируется директория <i>vps1/templates/openvpn/ansible_vpn/</i> которая будет находиться в <i>/etc/openvpn</i>
 
 Как это работает:
 
 - В первую очередь, нужно отредактировать темплейт конфигурации для клиента, чтобы параметры клиентской конфигурации соответствовали серверу
-    ansible_vpn/roles/openvpn-keys/templates/vps.ovpn.j2
+    <i>ansible_vpn/roles/openvpn-keys/templates/vps.ovpn.j2</i>
+
     В данном стучае необходимо поставить только IP своего openvpn сервера и порт
 
-- для генерации клиентских ключей и конфига, необходимо выполнить `ansible-playbook client.yml -e client=<clientname>`
-    После успешного выполнения плейбука, мы получим готовый конфиг со вшитыми в него сертификатами в директории ansible_vpn/clients
-    И архив с этим же конфигом (ну вдруг надо будет именно архив) в директории ansible_vpn/archives
+- для генерации клиентских ключей и конфига, необходимо выполнить 
+
+    `ansible-playbook client.yml -e client=<clientname>`
+
+    После успешного выполнения плейбука, мы получим готовый конфиг со вшитыми в него сертификатами в директории <i>ansible_vpn/clients</i>
+    И архив с этим же конфигом (ну вдруг надо будет именно архив) в директории <i>ansible_vpn/archives</i>
 
 ## Генерация ключей для wireguard.
 
 Лучше всего это делать на своем пк, чтобы ключи не утекли куда-либо на сторону.
 
-Для генерации ключей, нужна утилита wg genkey входящая в пакет wireguard-tools. https://www.wireguard.com/install/
+Для генерации ключей, нужна утилита <b>wg genkey</b> входящая в пакет <b>wireguard-tools</b> 
+
+https://www.wireguard.com/install/
 
 - `wg genkey | tee wg-server-private.key | wg pubkey > wg-server-pub.key` - создается пара приватный/публичный ключ для самого сервера. (публичный ключ сервера прописывается в конфиги клиентов, приватный прописывается в конфиг сервера)
 
@@ -59,15 +73,22 @@
 
 ## Генерация клиентских конфигов для wireguard используя ansible
 
-Для этого на сервер копируется директория vps1/templates/wireguard/ansible_wg/ которая будет находиться в /etc/wireguard
+Для этого на сервер копируется директория <i>vps1/templates/wireguard/ansible_wg/</i> которая будет находиться в <i>/etc/wireguard</i>
 
 Как это работает:
 
 - В первую очередь, нужно отредактировать темплейт конфигурации для клиента, чтобы параметры клиентской конфигурации соответствовали серверу
-    ansible_wg/roles/wireguard/templates/wg_client.conf.j2
-    В данном стучае необходимо поставить в параметре Endpoint IP:Порт своего wireguard сервера и увеличить Address = 10.13.1.2/24 на 1 (если это не первый конфиг)
-    т.е перед генерацией нового клиентского конфига, нужно увеличивать Address = 10.13.1.2/24 на 1, т.е. 10.13.1.3, 10.13.1.4 и т.д (не осилил автоинкремент в темплейтах :( )
 
-- для генерации клиентских ключей и конфига, необходимо выполнить `ansible-playbook client.yml -e client=<clientname>`
-    После успешного выполнения плейбука, мы получим готовый конфиг с прописанным в нем приватным ключем клиента и публичным ключем сервера в директории ansible_wg/clients
-    И архив с этим же конфигом (ну вдруг надо будет именно архив) в директории ansible_wg/archives
+    <i>ansible_wg/roles/wireguard/templates/wg_client.conf.j2</i>
+
+    В данном стучае необходимо поставить в параметре <b>Endpoint</b> IP:Порт своего wireguard сервера и увеличить <b>Address = 10.13.1.2/24</b> на 1 (если это не первый конфиг)
+
+    т.е перед генерацией нового клиентского конфига, нужно увеличивать <b>Address = 10.13.1.2/24</b> на 1, т.е. 10.13.1.3, 10.13.1.4 и т.д (не осилил автоинкремент в темплейтах... )
+
+- для генерации клиентских ключей и конфига, необходимо выполнить 
+
+    `ansible-playbook client.yml -e client=<clientname>`
+
+После успешного выполнения плейбука, мы получим готовый конфиг с прописанным в нем приватным ключем клиента и публичным ключем сервера в директории <i>ansible_wg/clients</i>
+
+И архив с этим же конфигом (ну вдруг надо будет именно архив) в директории <i>ansible_wg/archives</i>
