@@ -1,0 +1,17 @@
+- name: create client {{ client }} configuration
+  template:
+    src=vps.ovpn.j2
+    dest="{{ openvpn_clients_dir }}/{{ client }}.ovpn"
+    owner=root
+    group=root
+    mode=0644
+  vars:
+    ca_crt_file: "{{ openvpn_easyrsa_dir }}keys/ca.crt"
+    ta_key_file: "{{ openvpn_easyrsa_dir }}keys/ta.key"
+    user_crt_file: "{{ openvpn_easyrsa_dir }}keys/{{ client }}.crt"
+    user_key_file: "{{ openvpn_easyrsa_dir }}keys/{{ client }}.key"
+    ca_crt: "{{ query('file', ca_crt_file ) }}"
+    ta_key: "{{ lookup('file', ta_key_file ).splitlines() }}"
+    user_crt: "{{ query('file', user_crt_file ) }}"
+    user_key: "{{ query('file', user_key_file ) }}"
+

@@ -17,6 +17,8 @@
       - tree
       - mc
       - neofetch
+      - ansible
+      - zip
     state: latest
 
 - name: install cli apps networking...
@@ -36,9 +38,19 @@
       - wget
       - aria2
     state: latest
+  notify:
+    - start fail2ban
 
-- name: Start fail2ban...
-  systemd:
-    name: fail2ban
-    state: started
-    enabled: yes
+- name: ansible-galaxy install collection...
+  community.general.ansible_galaxy_install:
+    type: collection
+    name: "{{ item }}"
+    force: false
+  loop:
+    - community.general
+    - community.crypto
+    - ansible.posix
+
+#- name: Start fail2ban...
+#  notify:
+#    - start fail2ban

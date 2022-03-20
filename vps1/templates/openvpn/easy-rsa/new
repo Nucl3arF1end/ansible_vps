@@ -1,0 +1,19 @@
+#!/bin/bash
+
+client=$1
+mail=$2
+
+#openssl req -new -nodes -keyout keys/$client.key -out keys/$client.req
+#openssl ca -batch -config openssl.cnf -out keys/$client.crt -infiles keys/$client.req
+
+    tmpdir=/tmp/client-zip.$$
+    mkdir $tmpdir
+    cp example.conf $tmpdir/config.ovpn
+    cp keys/ca.crt $tmpdir
+    cp keys/ta.key $tmpdir
+    cp keys/$client.key $tmpdir/$client.key
+    cp keys/$client.crt $tmpdir/$client.crt
+    /bin/sed -i'' "s/username/$client/g" $tmpdir/config.ovpn
+    cp $tmpdir/config.ovpn $tmpdir/ovpn.conf
+    /usr/bin/zip -r $client-vpn.zip $tmpdir
+    echo "VPN config" | /usr/bin/mutt -a "$client-vpn.zip" -s "VPN config" -- $mail

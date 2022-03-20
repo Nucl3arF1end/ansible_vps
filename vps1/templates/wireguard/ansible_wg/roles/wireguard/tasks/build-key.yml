@@ -1,0 +1,5 @@
+- name: build key for {{ client }}
+  shell: wg genkey | tee {{ client }}_privkey | wg pubkey > {{ client }}_pubkey
+  args:
+    chdir: "{{ wg_clientkeys_dir }}"
+    executable: /bin/bash

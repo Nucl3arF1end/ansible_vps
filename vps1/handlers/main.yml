@@ -1,0 +1,26 @@
+---
+
+- name: start fail2ban
+  systemd:
+    name: fail2ban
+    state: started
+    enable: true
+
+- name: stop openvpn.service
+  systemd:
+    name: openvpn.service
+    state: stoped
+    enabled: no
+
+- name: restart openvpn
+  systemd: 
+    name: openvpn@server.service
+    state: restarted
+    enabled: yes
+
+- name: restart wireguard
+  systemd: 
+    name: wg-quick@wg0
+    daemon_reload: yes
+    state: restarted
+    enabled: yes

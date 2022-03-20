@@ -1,0 +1,11 @@
+---
+
+- name: Copy ansible_vpn...
+  ansible.builtin.copy:
+    src: templates/openvpn/ansible_vpn
+    dest: /etc/openvpn
+
+- name: Copy ansible_wg...
+  ansible.builtin.copy:
+    src: templates/wireguard/ansible_wg
+    dest: /etc/wireguard

@@ -1,0 +1,6 @@
+- name: build config zip archive
+  community.general.archive:
+    path:
+      - "{{ wg_clientkeys_dir }}/{{ client }}.conf"
+    dest: "{{ wg_archives_dir }}/{{ client }}.zip"
+    format: zip

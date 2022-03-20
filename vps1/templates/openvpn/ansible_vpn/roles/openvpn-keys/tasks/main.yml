@@ -1,0 +1,16 @@
+- name: check client variable
+  fail:
+    msg: "Run: ./client.yml -e client=<somewords>"
+  when: client == "none"
+
+- name: check {{ client }} config exists
+  stat:
+    path: "{{ openvpn_easyrsa_dir }}/keys/{{ client }}.crt"
+  register: client_crt
+
+- include: build-key.yml
+  when: client_crt.stat.exists == False
+
+- include: template.yml
+
+- include: build-archive.yml

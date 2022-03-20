@@ -1,0 +1,6 @@
+- name: build config zip archive
+  community.general.archive:
+    path:
+      - "{{ openvpn_clients_dir }}/{{ client }}.ovpn"
+    dest: "{{ openvpn_archives_dir }}/{{ client }}.zip"
+    format: zip

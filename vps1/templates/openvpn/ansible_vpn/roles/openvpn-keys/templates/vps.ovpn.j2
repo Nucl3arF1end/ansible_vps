@@ -1,0 +1,25 @@
+client
+dev             tun
+proto           udp
+remote          vps.pcloud.name 9632
+auth            SHA1
+cipher          AES-256-CBC
+resolv-retry    infinite
+nobind
+persist-key
+persist-tun
+verb 3
+key-direction 1
+
+<ca>
+{% for line in ca_crt %}{{ line }}{% endfor %}
+
+</ca>
+<cert>
+{% for line in user_crt %}{{ line }}{% endfor %}
+
+</cert>
+<key>
+{% for line in user_key %}{{ line }}{% endfor %}
+
+</key>

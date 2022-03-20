@@ -11,13 +11,8 @@
 
 - name: Copy config and keys...
   copy:
-    src: templates/wireguard/
+    src: templates/wireguard/root/
     dest: /etc/wireguard
     follow: yes
-
-- name: Restart wireguard daemon and enabled...
-  systemd:
-    state: restarted
-    enabled: yes
-    daemon_reload: yes
-    name: wg-quick@wg0
+  notify:
+    - restart wireguard

@@ -1,0 +1,12 @@
+[Interface]
+Address = 10.13.1.2/24
+PrivateKey = {% for line in client_priv_key %}{{ line }}{% endfor %}
+
+DNS = 1.1.1.1
+
+[Peer]
+# Server
+PublicKey = {% for line in wg_pub_key %}{{ line }}{% endfor %}
+
+AllowedIPs = 0.0.0.0/0
+Endpoint = vps.pcloud.name:51820

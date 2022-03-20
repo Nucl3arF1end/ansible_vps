@@ -1,0 +1,7 @@
+openvpn_easyrsa_dir: "/etc/openvpn/easy-rsa/"
+openvpn_clients_dir: "/etc/openvpn/ansible_vpn/clients"
+openvpn_archives_dir: "/etc/openvpn/ansible_vpn/archives"
+openvpn_manuals_dir: "/etc/openvpn/ansible_vpn/roles/openvpn-keys/templates/"
+
+ansible_connection: local
+ansible_python_interpreter: /usr/bin/python3

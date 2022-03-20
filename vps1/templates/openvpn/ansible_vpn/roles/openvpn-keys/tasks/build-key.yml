@@ -1,0 +1,22 @@
+- name: build key for {{ client }}
+  ansible.builtin.expect:
+    command: /bin/bash -c "cd {{ openvpn_easyrsa_dir }}; source vars; ./build-key {{ client }}"
+    echo: no
+    responses:
+      Country Name \(2 letter code\): ""
+      State or Province Name \(full name\): ""
+      Locality Name \(eg, city\): ""
+      Organization Name \(eg, company\): ""
+      Organizational Unit Name \(eg, section\): ""
+      Common Name \(eg, your name or your server's hostname\): ""
+      Name \[\]: ""
+      Email Address \[: ""
+      A challenge password: ""
+      An optional company name: ""
+      Sign the certificate: "y"
+      1 out of 1 certificate requests certified, commit: "y"
+  register: output
+
+- name: debug
+  ansible.builtin.debug:
+    var: output

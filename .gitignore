@@ -1,2 +1,5 @@
-/vps1/templates/
+vps1/templates/openvpn/root/ipp.txt
+vps1/templates/openvpn/easy-rsa/keys/
+vps1/templates/wg-keys/
+vps1/templates/wireguard/root/wg0.conf
 ansible.log

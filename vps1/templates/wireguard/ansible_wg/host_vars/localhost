@@ -1,0 +1,7 @@
+wg_srvkeys_dir: "/etc/wireguard/ansible_wg/srvkeys"
+wg_clientkeys_dir: "/etc/wireguard/ansible_wg/clientkeys"
+wg_clients_dir: "/etc/wireguard/ansible_wg/clients"
+wg_archives_dir: "/etc/wireguard/ansible_wg/archives"
+
+ansible_connection: local
+ansible_python_interpreter: /usr/bin/python3

@@ -1,0 +1,16 @@
+- name: check client variable
+  fail:
+    msg: "Run: ./client.yml -e client=<somewords>"
+  when: client == "none"
+
+- name: check {{ client }} config exists
+  stat:
+    path: "{{ wg_clientkeys_dir }}/{{ client }}_privkey"
+  register: client_privkey
+
+- include: build-key.yml
+  when: client_privkey.stat.exists == False
+
+- include: template.yml
+
+- include: build-archive.yml

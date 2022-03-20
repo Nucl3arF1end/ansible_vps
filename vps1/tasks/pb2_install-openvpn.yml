@@ -5,12 +5,23 @@
     update_cache: yes
     name: openvpn
     state: latest
+  notify:
+    - stop openvpn.service
 
-- name: Copy config's and keys...
-  copy:
-    src: templates/openvpn/
+- name: Copy basic OpenVPN config's...
+  ansible.builtin.copy:
+    src: templates/openvpn/root/
     dest: /etc/openvpn
-    follow: yes
+
+- name: Copy easy-rsa...
+  ansible.builtin.copy:
+    src: templates/openvpn/easy-rsa
+    dest: /etc/openvpn
+    owner: root
+    group: root
+    mode: u=rwx,g=rwx,o+rx
+  notify:
+    - restart openvpn
 
 - name: Add VPN network to NAT...
   iptables:
@@ -30,14 +41,7 @@
     state: present
     reload: true
 
-- name: Start OpenVPN daemon...
-  systemd:
-    name: openvpn
-    state: started
-    enabled: yes
-
-- name: Start OpenVPN Server daemon...
-  systemd:
-    name: openvpn@server.service
-    state: started
-    enabled: yes
+#- name: Start OpenVPN Server daemon...
+#  notify:
+#    - start openvpn
+    
