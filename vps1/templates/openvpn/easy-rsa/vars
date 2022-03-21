@@ -21,10 +21,10 @@ export CA_EXPIRE=3650
 
 export KEY_EXPIRE=3650
 
-export KEY_COUNTRY="DE"
-export KEY_PROVINCE="DE"
-export KEY_CITY="FrankfurtamMain"
-export KEY_ORG="myorganization.org"
+export KEY_COUNTRY="NL"
+export KEY_PROVINCE="NL"
+export KEY_CITY="Amsterdam"
+export KEY_ORG="someorganization.org"
 export KEY_EMAIL="email@mymail.net"
 export KEY_EMAIL=email@mymail.net
 export KEY_CN=

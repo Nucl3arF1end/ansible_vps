@@ -1,6 +1,6 @@
 ---
 ansible_connection: ssh 
 ansible_user: root 
-ansible_ssh_port: '4570'
-ansible_ssh_private_key_file: ~/.ssh/vpsroot
+ansible_ssh_port: '<port>'
+ansible_ssh_private_key_file: ~/.ssh/id_rsa
 ansible_python_interpreter: /usr/bin/python3

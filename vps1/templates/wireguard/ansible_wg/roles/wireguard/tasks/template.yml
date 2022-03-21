@@ -11,4 +11,3 @@
     client_publey_file: "{{ wg_clientkeys_dir }}/{{ client }}_pubkey"
     wg_pub_key: "{{ query('file', wg_pubkey_file ) }}"
     client_priv_key: "{{ query('file', client_privkey_file ) }}"
-#    digits: "{{ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }}"

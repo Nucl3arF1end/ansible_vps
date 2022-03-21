@@ -1,2 +1,2 @@
 [vps1]
-vps.pcloud.name
+<ip or dns name>
